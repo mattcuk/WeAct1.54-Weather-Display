@@ -124,7 +124,7 @@ void setup() {
       byte Attempts = 1;
       WiFiClient client;   // wifi client object
       while (RxWeather == false && Attempts <= 5) { // Try up-to 5x for Weather and Forecast data
-        if (RxWeather  == false) RxWeather  = ReceiveOneCallWeather(client, true);
+        if (RxWeather == false) RxWeather  = ReceiveOneCallWeather(client, true);
         delay(5000); // Delay between attempts to retrieve weather from API
         Attempts++;
       }
@@ -146,7 +146,7 @@ void loop() { // this will never run!
 //#########################################################################################
 
 void BeginSleep() {
-  delay(60000); // Wait a minute before turning off.. gives time to reflash the firmware
+  delay(90000); // Wait a 90sec before turning off.. gives time to reflash the firmware
   display.powerOff();
   long SleepTimer = (SleepDuration * 60 - ((CurrentMin % SleepDuration) * 60 + CurrentSec)); //Some ESP32 are too fast to maintain accurate time
   esp_sleep_enable_timer_wakeup((SleepTimer+20) * 1000000LL); // Added +20 seconnds to cover ESP32 RTC timer source inaccuracies
@@ -172,16 +172,18 @@ void DisplayTempHumiSection(int x, int y) {
   display.drawRect(x, y, 115, 97, GxEPD_BLACK);
   display.setFont(&DSEG7_Classic_Bold_21);
   display.setTextSize(2);
-  drawString(x + 20, y + 5, String(WxConditions[0].Temperature, 0) + "'", LEFT);                                   // Show current Temperature
+  drawString(x + 17, y + 5, String(WxConditions[0].Temperature, 0) + "'", LEFT);                                   // Show current Temperature
   display.setTextSize(1);
-  drawString(x + 93, y + 30, (Units == "M" ? "C" : "F"), LEFT); // Add-in smaller Temperature unit
+  drawString(x + 90, y + 30, (Units == "M" ? "C" : "F"), LEFT); // Add-in smaller Temperature unit
   display.setTextSize(2);
   display.setFont(&DejaVu_Sans_Bold_11);
   // High&Low aren't in v3.0 of the API, so we'll show 'Feels Like' instead
   //drawString(x + 57, y + 59, String(WxConditions[0].High, 0) + "'/" + String(WxConditions[0].Low, 0) + "'", CENTER); // Show forecast high and Low, in the font ' is a °
-  drawString(x + 57, y + 59, "F " + String(WxConditions[0].FeelsLike, 0) + "", CENTER);
+  drawString(x + 55, y + 56, "f" + String(WxConditions[0].FeelsLike, 0), RIGHT);
   display.setTextSize(1);
-  drawString(x + 60,  y + 83, String(WxConditions[0].Humidity, 0) + "% RH", CENTER);                               // Show Humidity
+  drawString(x + 57,  y + 57, "o  " + String(WxConditions[0].Humidity, 0) + "%", LEFT);                               // Show Humidity
+  drawString(x + 60,  y + 83, "H" + String(Daily[0].High, 0) + " / L" + String(Daily[0].Low, 0), CENTER);                // Show day high/low temps from daily forecast array
+
 }
 //#########################################################################################
 void DisplayHeadingSection() {
@@ -198,7 +200,7 @@ void DisplayMainWeatherSection(int x, int y) {
   //String Wx_Description1 = WxConditions[0].Forecast0;
   String Wx_Description1 = WxConditions[0].Description;
   display.setFont(&DejaVu_Sans_Bold_11);
-  String Wx_Description2 = WindDegToDirection(WxConditions[0].Winddir) + " wind, " + String(WxConditions[0].Windspeed, 1) + (Units == "M" ? "m/s" : "mph");
+  String Wx_Description2 = WindDegToDirection(WxConditions[0].Winddir) + " " + String(WxConditions[0].Windspeed, 1) + (Units == "M" ? "m/s" : "mph") + " Gust " + String(Daily[0].Windgust, 1) + (Units == "M" ? "m/s" : "mph") + "";
   drawStringMaxWidth(x + 2, y - 2, 27, TitleCase(Wx_Description1), LEFT);
   drawStringMaxWidth(x + 2, y +10, 27, TitleCase(Wx_Description2), LEFT);  
 }
@@ -227,7 +229,8 @@ void DisplayForecastWeather(int x, int y, int offset, int index) {
   drawString(x + offset / 2, y  + 3, String(ConvertUnixTime(WxForecast[index].Dt + WxConditions[0].Timezone).substring(0,5)), CENTER);
   // High&Low aren't in v3.0 of the API, so we'll show 'Feels Like' instead
   //drawString(x + offset / 2, y + 50, String(WxForecast[index].High, 0) + "/" + String(WxForecast[index].Low, 0), CENTER);
-  drawString(x + offset / 2, y + 50, String(WxForecast[index].Temperature, 0) + "/" + String(WxForecast[index].FeelsLike, 0), CENTER);
+  //drawString(x + offset / 2, y + 50, String(WxForecast[index].Temperature, 0) + "/" + String(WxForecast[index].FeelsLike, 0), CENTER);
+  drawString(x + offset / 2, y + 50, String(WxForecast[index].FeelsLike, 0), CENTER);
 }
 //#########################################################################################
 String WindDegToDirection(float winddirection) {

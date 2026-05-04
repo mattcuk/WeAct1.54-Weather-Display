@@ -33,6 +33,7 @@ typedef struct { // For current Day and Day 1, 2, 3, etc
   float    Low;
   float    Winddir;
   float    Windspeed;
+  float    Windgust;
   float    Rainfall;
   float    Snowfall;
   float    Pressure;
@@ -183,6 +184,8 @@ bool DecodeOneCallWeather(WiFiClient& json, bool print) {
     Daily[r].UVI         = daily_values["uvi"];                                  if (print) Serial.println("UVI    : " + String(Daily[r].UVI, 1));
     Daily[r].Rainfall    = daily_values["rain"];                                 if (print) Serial.println("Rain   : " + String(Daily[r].Rainfall));
     Daily[r].Snowfall    = daily_values["snow"];                                 if (print) Serial.println("Snow   : " + String(Daily[r].Snowfall));
+    Daily[r].Windspeed   = daily_values["wind_speed"];                           if (print) Serial.println("Wind   : " + String(Daily[r].Windspeed));
+    Daily[r].Windgust    = daily_values["wind_gust"];                            if (print) Serial.println("Gust   : " + String(Daily[r].Windgust));
     Daily[r].Icon        = daily_values["weather"][0]["icon"].as<const char*>(); if (print) Serial.println("Icon   : " + String(Daily[r].Icon));
   }
   //------------------------------------------
