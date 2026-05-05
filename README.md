@@ -45,11 +45,11 @@ Here's how I hooked up the WeAct 1.54" display to the ESP32 C3 Super, including 
 
 # 3D Printable Display
 
-For this project I designed a minimalist display to mount the ePaper module and ESP32 onto. There's an optional (partial) back cover if you want that to hide some of the wires.
+For this project I designed a [minimalist display](https://mattcollinge.wordpress.com/2026/05/04/5-pound-epaper-weather-display-weact-1-54-esp-c3-super/) to mount the ePaper module and ESP32 onto. There's an optional (partial) back cover if you want that to hide some of the wires.
 
 The ESP32 C3 Super fits into a clip on the back.. I couldn't figure out a better way to do this; it's functional but not the best.
 
-This model is available on MakerWorld if you'd like to print it.
+This model is [available on MakerWorld](https://mattcollinge.wordpress.com/2026/05/04/5-pound-epaper-weather-display-weact-1-54-esp-c3-super/) if you'd like to print it.
 
 ![Case Parts](Images/caseparts.jpg)
 
