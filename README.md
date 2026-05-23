@@ -20,9 +20,9 @@ You'll be able to take this code (the main .ino file) and compare it to David's 
 
 - Added a 60 second delay before deep sleep, allowing you to re-flash the board more easily
 
-- OpenWeather v3 API doesn't have High/Low temps so I've changed the display to show 'Feels Like' instead
+- Added a board reboot after 100 cycles to help with it stopping working after a few days
 
-- OpenWeather v3 API doesn't have the Forecast so I've changed the display to show the current conditions
+- OpenWeather v3 API doesn't have the full forecast so I've changed the display to show the current conditions
 
 - Removed (commented out) the SPI commands from the screen initialisation function.. these were crashing the C3 Super board
 
