@@ -43,9 +43,9 @@ Here's how I hooked up the WeAct 1.54" display to the ESP32 C3 Super, including 
 |GND|Black|GND||
 |VCC|Red|3.3||
 
-# 3D Printable Display
+# 3D Printable Stand
 
-For this project I designed a minimalist display to mount the ePaper module and ESP32 onto. There's an optional (partial) back cover if you want that to hide some of the wires.
+For this project I designed a minimalist stand to mount the ePaper module and ESP32 onto. There's an optional (partial) back cover if you want that to hide some of the wires.
 
 The ESP32 C3 Super fits into a clip on the back.. I couldn't figure out a better way to do this; it's functional but not the best.
 

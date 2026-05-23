@@ -34,6 +34,7 @@
    g. OpenWeather v3 API doesn't have the Forecast so I've changed the display to show the current conditions
    h. Removed the software version from the top of the display
    i. Removed (commented out) the SPI commands from the screen initialisation function.. these were crashing the C3 Super board
+   j. Added a board reboot after 100 cycles to help with it stopping working after a few days for no reason
 */
 
 #include "owm_credentials.h"   // See 'owm_credentials' tab and enter your OWM API key and set the Wifi SSID and PASSWORD
@@ -112,6 +113,8 @@ float rain_readings[max_readings]        = {0};
 long SleepDuration = 30; // Sleep time in minutes, aligned to minute boundary, so if 30 will always update at 00 or 30 past the hour
 int  WakeupTime    = 7;  // Don't wakeup until after 07:00 to save battery power
 int  SleepTime     = 23; // Sleep after (23+1) 00:00 to save battery power
+int  CyclesBeforeReboot = 100; // Reboot after 100 cycles to help prevent memory leaks and other issues that can arise from long-term use of ESP32 in deep sleep mode. Adjust as needed based on your specific use case and stability requirements.
+int  CycleCount = 0; // Initialize cycle count
 
 //#########################################################################################
 
@@ -157,6 +160,11 @@ void BeginSleep() {
   Serial.println("Entering " + String(SleepTimer) + "-secs of sleep time");
   Serial.println("Awake for : " + String((millis() - StartTime) / 1000.0, 3) + "-secs");
   Serial.println("Starting deep-sleep period...");
+  CycleCount++; // Track the number of sleep/wake cycles
+  if (CycleCount >= CyclesBeforeReboot) {
+    Serial.println("Rebooting...");
+    ESP.restart();
+  }
   esp_deep_sleep_start();      // Sleep for e.g. 30 minutes
 }
 //#########################################################################################
