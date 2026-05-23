@@ -22,7 +22,11 @@ You'll be able to take this code (the main .ino file) and compare it to David's 
 
 - Added a board reboot after 100 cycles to help with it stopping working after a few days
 
+- Adjusted the main weather info to add the Real-Feel temp (denoted with a 'f' prefix) and daily high/low
+
 - OpenWeather v3 API doesn't have the full forecast so I've changed the display to show the current conditions
+
+- Added the gust metric next to the wind speed (there was room and it's sometimes useful to see this)
 
 - Removed (commented out) the SPI commands from the screen initialisation function.. these were crashing the C3 Super board
 
