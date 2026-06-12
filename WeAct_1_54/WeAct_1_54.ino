@@ -113,7 +113,7 @@ float rain_readings[max_readings]        = {0};
 long SleepDuration = 30; // Sleep time in minutes, aligned to minute boundary, so if 30 will always update at 00 or 30 past the hour
 int  WakeupTime    = 7;  // Don't wakeup until after 07:00 to save battery power
 int  SleepTime     = 23; // Sleep after (23+1) 00:00 to save battery power
-int  CyclesBeforeReboot = 100; // Reboot after 100 cycles to help prevent memory leaks and other issues that can arise from long-term use of ESP32 in deep sleep mode. Adjust as needed based on your specific use case and stability requirements.
+int  CyclesBeforeReboot = 60; // Reboot after 60 cycles to help prevent memory leaks and other issues that can arise from long-term use of ESP32 in deep sleep mode. Adjust as needed based on your specific use case and stability requirements.
 int  CycleCount = 0; // Initialize cycle count
 
 //#########################################################################################
@@ -179,19 +179,21 @@ void DisplayWeather() {                                    // 1.54" e-paper disp
 void DisplayTempHumiSection(int x, int y) {
   display.drawRect(x, y, 115, 97, GxEPD_BLACK);
   display.setFont(&DSEG7_Classic_Bold_21);
+
   display.setTextSize(2);
-  drawString(x + 17, y + 5, String(WxConditions[0].Temperature, 0) + "'", LEFT);                                   // Show current Temperature
+  drawString(x + 17, y + 6, String(WxConditions[0].Temperature, 0) + "'", LEFT);                                   // Show current Temperature
   display.setTextSize(1);
-  drawString(x + 90, y + 30, (Units == "M" ? "C" : "F"), LEFT); // Add-in smaller Temperature unit
+  //drawString(x + 90, y + 30, (Units == "M" ? "C" : "F"), LEFT); // Add-in smaller Temperature unit
+  
   display.setTextSize(2);
   display.setFont(&DejaVu_Sans_Bold_11);
-  // High&Low aren't in v3.0 of the API, so we'll show 'Feels Like' instead
-  //drawString(x + 57, y + 59, String(WxConditions[0].High, 0) + "'/" + String(WxConditions[0].Low, 0) + "'", CENTER); // Show forecast high and Low, in the font ' is a °
-  drawString(x + 55, y + 56, "f" + String(WxConditions[0].FeelsLike, 0), RIGHT);
+  drawString(x + 60, y + 53, "" + String(Daily[0].Low, 0) + "'/" + String(Daily[0].High, 0) + "'", CENTER);                // Day high/low temps from daily forecast array
+  //drawString(x + 57, y + 59, String(WxConditions[0].High, 0) + "'/" + String(WxConditions[0].Low, 0) + "'", CENTER);  // Show forecast high and Low, in the font ' is a °
+  
   display.setTextSize(1);
-  drawString(x + 57,  y + 57, "o  " + String(WxConditions[0].Humidity, 0) + "%", LEFT);                               // Show Humidity
-  drawString(x + 60,  y + 83, "H" + String(Daily[0].High, 0) + " / L" + String(Daily[0].Low, 0), CENTER);                // Show day high/low temps from daily forecast array
-
+  drawString(x + 45, y + 83, "f" + String(WxConditions[0].FeelsLike, 0) + "'", RIGHT);  // Feels like
+  drawString(x + 72, y + 83, "" + String(WxConditions[0].Humidity, 0) + "%", LEFT);  // Humidity
+  
 }
 //#########################################################################################
 void DisplayHeadingSection() {
@@ -238,7 +240,7 @@ void DisplayForecastWeather(int x, int y, int offset, int index) {
   // High&Low aren't in v3.0 of the API, so we'll show 'Feels Like' instead
   //drawString(x + offset / 2, y + 50, String(WxForecast[index].High, 0) + "/" + String(WxForecast[index].Low, 0), CENTER);
   //drawString(x + offset / 2, y + 50, String(WxForecast[index].Temperature, 0) + "/" + String(WxForecast[index].FeelsLike, 0), CENTER);
-  drawString(x + offset / 2, y + 50, String(WxForecast[index].FeelsLike, 0), CENTER);
+  drawString(x + offset / 2, y + 50, String(WxForecast[index].FeelsLike, 0) + "'", CENTER);
 }
 //#########################################################################################
 String WindDegToDirection(float winddirection) {
