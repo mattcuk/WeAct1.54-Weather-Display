@@ -6,7 +6,7 @@ The changes I made to his [1.54" example](https://github.com/G6EJD/ESP32-e-Paper
 
 You'll be able to take this code (the main .ino file) and compare it to David's for the different screen sizes to make it work with WeAct's other displays without much hassle.
 
-![Screen Refresh](Images/loading.gif)
+![Screen Refresh](Images/loading.gif) ![Annotated](Images/annotated.png)
 
 # Changes Made for this Project
 
@@ -20,7 +20,7 @@ You'll be able to take this code (the main .ino file) and compare it to David's 
 
 - Added a 60 second delay before deep sleep, allowing you to re-flash the board more easily
 
-- Added a board reboot after 100 cycles to help with it stopping working after a few days
+- Added a board reboot after 60 cycles to help with the C3 freezing after a few days
 
 - Adjusted the main weather info to add the Real-Feel temp (denoted with a 'f' prefix) and daily high/low
 
