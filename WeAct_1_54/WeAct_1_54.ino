@@ -93,7 +93,7 @@ bool LargeIcon = true, SmallIcon = false, RxWeather = false, RxForecast = false;
 #define Large  10
 #define Small  4
 String  Time_str, Date_str, rxtext; // strings to hold time and received weather data;
-int     StartTime, CurrentHour = 0, CurrentMin = 0, CurrentSec = 0;
+int     StartTime, CurrentHour = 0, CurrentMin = 0, CurrentSec = 0, SentHeartBeatToday = 0;
 
 //################ PROGRAM VARIABLES and OBJECTS ################
 
@@ -132,10 +132,16 @@ void setup() {
         Attempts++;
       }
       if (RxWeather || RxForecast) { // If received either Weather or Forecast data then proceed, report later if either failed
+        if(SentHeartBeatToday==0) {
+          sendHeartBeat(client);
+          SentHeartBeatToday = 1;
+        }
         StopWiFi(); // Reduces power consumption
         DisplayWeather();
         display.display(false); // Full screen update mode
       }
+    } else {
+      SentHeartBeatToday = 0;
     }
     BeginSleep();
   }

@@ -1,7 +1,6 @@
-//
-
 #include <Arduino.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 
 typedef struct { // For current Day and Day 1, 2, 3, etc
   String Time;
@@ -82,6 +81,39 @@ String ConvertUnixTime(int unix_time) {
     strftime(output, sizeof(output), "%I:%M%P %m/%d/%y", now_tm);
   }
   return output;
+}
+//#########################################################################################
+void sendHeartBeat(WiFiClient& client) {
+  if(updateHeartbeatDomain=="") return;
+  Serial.println("Sending heartbeat...");
+  client.stop(); // close connection before sending a new request
+  HTTPClient http;
+  int httpCode;
+
+  // Azure Logic App callback URLs use HTTPS, normally on port 443.  Use a
+  // TLS client rather than sending the webhook over plain HTTP.
+  if (updateHeartbeatPort == 443) {
+    WiFiClientSecure secureClient;
+    secureClient.setInsecure(); // The Logic App SAS query authenticates it.
+    if (!http.begin(secureClient, updateHeartbeatDomain, updateHeartbeatPort,
+                    updateHeartbeatPath)) {
+      Serial.println("Unable to start HTTPS heartbeat request");
+      return;
+    }
+    httpCode = http.GET();
+  } else {
+    if (!http.begin(client, updateHeartbeatDomain, updateHeartbeatPort,
+                    updateHeartbeatPath)) {
+      Serial.println("Unable to start heartbeat request");
+      return;
+    }
+    httpCode = http.GET();
+  }
+
+  Serial.printf("Heartbeat HTTP status: %d\n", httpCode);
+  if (httpCode < 0) Serial.println(http.errorToString(httpCode));
+  http.end();
+  client.stop();
 }
 //#########################################################################################
 // Test call: http://api.openweathermap.org/data/3.0/onecall?lat=33&lon=-112&APPID=1a838280c1f7a40c3f8a5e5bc573e22d&mode=json&units=metric&lang=US&exclude=minutely

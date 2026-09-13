@@ -9,6 +9,11 @@ const char server[] = "api.openweathermap.org";
 //http://api.openweathermap.org/data/2.5/forecast?q=Melksham,UK&APPID=your_OWM_API_key&mode=json&units=metric&cnt=40 // Example API call for forecast data
 //Set your location according to OWM locations
 
+// Optionally send a heartbeat each day so you can trigger an alert if the unit freezes
+String updateHeartbeatDomain = "";
+int updateHeartbeatPort = 443;
+String updateHeartbeatPath = "";
+
 String LAT              = "51.38";                         // Home location Latitude
 String LON              = "-2.36";                         // Home location Longitude
 
