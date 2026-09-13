@@ -94,6 +94,7 @@ bool LargeIcon = true, SmallIcon = false, RxWeather = false, RxForecast = false;
 #define Small  4
 String  Time_str, Date_str, rxtext; // strings to hold time and received weather data;
 int     StartTime, CurrentHour = 0, CurrentMin = 0, CurrentSec = 0, SentHeartBeatToday = 0;
+RTC_DATA_ATTR int SentHeartBeatToday = 0; // Track if heartbeat has been sent today
 
 //################ PROGRAM VARIABLES and OBJECTS ################
 
@@ -114,7 +115,7 @@ long SleepDuration = 30; // Sleep time in minutes, aligned to minute boundary, s
 int  WakeupTime    = 7;  // Don't wakeup until after 07:00 to save battery power
 int  SleepTime     = 23; // Sleep after (23+1) 00:00 to save battery power
 int  CyclesBeforeReboot = 60; // Reboot after 60 cycles to help prevent memory leaks and other issues that can arise from long-term use of ESP32 in deep sleep mode. Adjust as needed based on your specific use case and stability requirements.
-int  CycleCount = 0; // Initialize cycle count
+RTC_DATA_ATTR int CycleCount = 0; // Initialize cycle count
 
 //#########################################################################################
 
