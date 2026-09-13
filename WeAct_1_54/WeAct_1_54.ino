@@ -93,7 +93,7 @@ bool LargeIcon = true, SmallIcon = false, RxWeather = false, RxForecast = false;
 #define Large  10
 #define Small  4
 String  Time_str, Date_str, rxtext; // strings to hold time and received weather data;
-int     StartTime, CurrentHour = 0, CurrentMin = 0, CurrentSec = 0, SentHeartBeatToday = 0;
+int     StartTime, CurrentHour = 0, CurrentMin = 0, CurrentSec = 0;
 RTC_DATA_ATTR int SentHeartBeatToday = 0; // Track if heartbeat has been sent today
 
 //################ PROGRAM VARIABLES and OBJECTS ################
