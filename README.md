@@ -22,6 +22,8 @@ You'll be able to take this code (the main .ino file) and compare it to David's 
 
 - Added a board reboot after 60 cycles to help with the C3 freezing after a few days
 
+- Added (optional) webhook URL to send device heartbeat. Let's you figure out if the board has frozen.
+
 - Adjusted the main weather info to add the Real-Feel temp (denoted with a 'f' prefix) and daily high/low
 
 - OpenWeather v3 API doesn't have the full forecast so I've changed the display to show the current conditions
